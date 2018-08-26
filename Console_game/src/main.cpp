@@ -58,7 +58,6 @@ void PrintError(const char* text) {
 	exit(0);
 }
 
-
 bool Eof(std::istream& inp) {
 	if (inp.eof()) {
 		return true;
@@ -71,7 +70,6 @@ bool Eof(std::istream& inp) {
 	inp.seekg(curPos);
 	return false;
 }
-
 
 char GetNextSymbolWithoutSpace(std::istream& levelFile) {
 	char c;
@@ -107,12 +105,10 @@ string ReadWhileNot(std::istream& levelFile, char stopChar) {
 	return text;
 }
 
-
-
 class Phrase {
 public:
 	int refId;
-	std::list<string> textArr;
+	std::vector<string> textArr;
 
 	char returnValue;
 	bool close;
@@ -120,14 +116,14 @@ public:
 
 	Phrase() :
 		refId(-1),
-		textArr(std::list<string>()),
+		textArr(std::vector<string>()),
 		returnValue(-1),
 		close(false),
 		openPath("") {}
 
 	Phrase(int _id, const string& _text) :
 		refId(_id),
-		textArr(std::list<string>()),
+		textArr(std::vector<string>()),
 		returnValue(-1),
 		close(false),
 		openPath("") 
@@ -516,7 +512,6 @@ class Game {
 private:
 	GameData* data;
 	Level* curLevel;
-	int passCounter;
 public:
 	Game(const string& levelFilePath, const string& dataFilePath) {
 
@@ -528,28 +523,24 @@ public:
 		curLevel->data = data;
 
 		curLevel->Load(levelFilePath);
-
-		passCounter = 0;
 	}
 
 	int Run() {
 		int curPointNum = 0;
-		auto pointTextIt = curLevel->dialogPoints[curPointNum].textArr.begin();
+		auto pointTextIt = 0;
 		int curItem = 0;
 		while (true) {
 			system("cls");
-			WriteText(*pointTextIt);
+			WriteText(curLevel->dialogPoints[curPointNum].textArr[pointTextIt]);
 			WriteChar('\n', 2);
-			auto tempIt = pointTextIt;
-			tempIt++;
-			if (tempIt == curLevel->dialogPoints[curPointNum].textArr.end()) {
+			if (pointTextIt == curLevel->dialogPoints[curPointNum].textArr.size() - 1) { 
 				
 				auto choicesVec = curLevel->dialogGraph[curPointNum];
 				auto choiceTextArr = choicesVec[0].textArr;
 
-				if (*(choiceTextArr.begin()) != "") {
+				if (choiceTextArr[0] != "") {
 					for (int i = 0; i < choicesVec.size(); ++i) {
-						WriteItem(*(choicesVec[i].textArr.begin()), (i == curItem));
+						WriteItem(choicesVec[i].textArr[0], (i == curItem));
 					}
 				}
 				else {
@@ -584,13 +575,13 @@ public:
 					curLevel->Load(nextPhrase.openPath);
 					curPointNum = 0;
 					curItem = 0;
-					pointTextIt = curLevel->dialogPoints[curPointNum].textArr.begin();
+					pointTextIt = 0;
 					continue;
 				}
 
-				if (tempIt == curLevel->dialogPoints[curPointNum].textArr.end()) {
+				if (pointTextIt == curLevel->dialogPoints[curPointNum].textArr.size() - 1) {
 					curPointNum = curLevel->dialogGraph[curPointNum][curItem].refId;
-					pointTextIt = curLevel->dialogPoints[curPointNum].textArr.begin();
+					pointTextIt = 0;
 				}
 				else {
 					pointTextIt++;
@@ -610,7 +601,6 @@ public:
 		return 0;
 	}
 };
-
 
 int main() {
 	
