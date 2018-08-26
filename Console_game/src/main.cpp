@@ -9,6 +9,7 @@ using std::string;
 #define TAB_SIZE 31
 #define BORDER_SPACE_SIZE 3
 #define LINE_LENGTH 50
+#define FILES_FOLDER_PATH "..\\Console_game\\src\\"
 
 void Space(int number) {
 	for (int i = 0; i < number; ++i) {
@@ -107,7 +108,7 @@ public:
 	int Load(string levelPath) {
 		std::ifstream levelFile;
 
-		levelFile.open(levelPath, std::ios::in);
+		levelFile.open(FILES_FOLDER_PATH + levelPath, std::ios::in);
 		if (!levelFile.is_open()) {
 			PrintError("Load level: cannot open file");
 		}
@@ -254,7 +255,7 @@ public:
 				curItem--;
 				continue;
 			}
-			if (item == 80 && curItem < curLevel->dialGraph[curPoint].size()) {
+			if (item == 80 && curItem + 1 < curLevel->dialGraph[curPoint].size()) {
 				curItem++;
 				continue;
 			}
@@ -263,7 +264,7 @@ public:
 };
 
 
-int not_main() {
+int main() {
 	setlocale(LC_ALL, "Russian");
 	Game game("game");
 	game.Run();
