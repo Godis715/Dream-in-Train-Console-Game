@@ -1,0 +1,23 @@
+10
+(0)<#replace"title">{
+	<Start>[open(game)]
+	<NewGame>[1]
+	<Settings>[2]
+	<Exit>[3]
+}
+
+(1)<Are you sure to begin a new game?>{
+	<No>[0]
+	<Yes>[open(game)]
+}
+
+(2)<Settings>{
+	<Music:      #replace"music">[2]
+	<Voice:      #replace"voice">[2]
+	<Back to menu>[0]
+}
+
+(3)<Are you sure?>{
+	<No>[0]
+	<Yes>[close()]
+}
