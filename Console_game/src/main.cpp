@@ -12,6 +12,7 @@ using std::string;
 #define BORDER_SPACE_SIZE 3
 #define LINE_LENGTH 50
 #define UPPER_SPACE_SIZE 5
+#define FILES_FOLDER_PATH "..\\Console_game\\src\\"
 
 void WriteChar(char c, int number) {
 	for (int i = 0; i < number; ++i) {
@@ -172,7 +173,7 @@ public:
 
 	void Load(const string& path) {
 		std::ifstream paramFile;
-		paramFile.open(path, std::ios::in);
+		paramFile.open(FILES_FOLDER_PATH + path, std::ios::in);
 
 		if (!paramFile.is_open()) {
 			PrintError("Load: couldn't open param file");
@@ -442,7 +443,7 @@ public:
 		if(dialogGraph != nullptr) delete[] dialogGraph;
 
 		std::ifstream levelFile;
-		levelFile.open(levelPath);
+		levelFile.open(FILES_FOLDER_PATH + levelPath, std::ios::in);
 		if(!levelFile.is_open()) {
 			PrintError("Couldn't open level file");
 		}
